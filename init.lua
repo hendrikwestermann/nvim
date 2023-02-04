@@ -8,17 +8,14 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
   require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'                                                         -- Package manager
-  use 'tpope/vim-fugitive'                                                             -- Git commands in nvim
-  use 'tpope/vim-rhubarb'                                                              -- Fugitive-companion to interact with github
-  use 'tpope/vim-surround'
-
+  use 'wbthomason/packer.nvim' -- Package manager
+  use 'tpope/vim-fugitive' -- Git commands in nvim
+  use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
   use 'lewis6991/gitsigns.nvim'
-  use 'numToStr/Comment.nvim'                                                          -- "gc" to comment visual regions/lines
+  use 'numToStr/Comment.nvim' -- comment visual regions/lines
 
   use { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
+    'nvim-treesitter/nvim-treesitter', run = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
   }
@@ -26,11 +23,8 @@ end
   use { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     requires = {
-      -- Automatically install LSPs to stdpath for neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-
-      -- Useful status updates for LSP
       'j-hui/fidget.nvim',
     },
   }
@@ -41,26 +35,22 @@ end
   }
 
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-  use 'lukas-reineke/indent-blankline.nvim'                                            -- Add indentation guides even on blank lines
-  use 'tpope/vim-sleuth'                                                               -- Detect tabstop and shiftwidth automatically
+  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
+  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
-  use 'szw/vim-maximizer'
-  use 'puremourning/vimspector'
   use {'lervag/vimtex', ft = 'tex', opt = true}
-  use { "ellisonleao/gruvbox.nvim" }
-  use {'akinsho/nvim-toggleterm.lua'}
+  use 'ellisonleao/gruvbox.nvim'
+  use 'akinsho/nvim-toggleterm.lua'
 
-  -- Fuzzy Finder (files, lsp, etc)
-  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
-
-  -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
+  use "folke/neodev.nvim"
+  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap",'ChristianChiarulli/neovim-codicons'} }
+  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } } -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable "make" == 1 }
 
   if is_bootstrap then
     require('packer').sync()
   end
 end)
--- stylua: ignore end
 
 -- When we are bootstrapping a configuration, it doesn't
 -- make sense to execute the rest of the init.lua.
@@ -85,7 +75,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
-
 vim.o.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'
 vim.o.cursorline = true
@@ -97,7 +86,6 @@ vim.o.swapfile = false
 vim.o.clipboard = 'unnamedplus'
 vim.o.hidden = true
 
-
 vim.o.joinspaces = false
 vim.o.scrolloff = 8
 vim.o.sidescroll = 8
@@ -106,10 +94,10 @@ vim.o.splitright = true
 vim.o.timeoutlen = 1000
 vim.o.updatetime = 100
 vim.o.virtualedit = 'block'
--- vim.o.iskeyword = vim.o.iskeyword + '-'
 
 -- Performance
 vim.o.lazyredraw = true
+
 -- Search
 vim.o.inccommand = 'nosplit' -- show substitutions incrementally
 vim.o.ignorecase = true
@@ -124,7 +112,6 @@ vim.o.softtabstop = 4
 vim.o.tabstop = 4
 
 -- Shortmess
--- vim.o.shortmess = vim.o.shortmess + 'A' + 'c' + 'I' + 'W'
 vim.o.smarttab = true
 vim.o.expandtab = true
 vim.o.smartindent = true
@@ -134,49 +121,24 @@ vim.o.startofline = false
 vim.o.undofile = true
 vim.o.tw = 119
 vim.o.fo = 't'
-vim.o.spelllang = 'en,cjk'
 
--- Set highlight on search
 vim.o.hlsearch = false
-
--- Make line numbers default
 vim.wo.number = true
 vim.o.relativenumber = true
-
--- Enable mouse mode
 vim.o.mouse = 'a'
-
--- Enable break indent
 vim.o.breakindent = true
-
--- Save undo history
 vim.o.undofile = true
-
--- Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
-
--- Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
-
--- Set colorscheme
 vim.o.termguicolors = true
-
--- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- [[ Basic Keymaps ]]
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Keymaps for better default experience
--- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
 
 -- Buffers
 vim.keymap.set({ 'n' }, '<Tab>', '<cmd>bn<CR>')
@@ -196,36 +158,12 @@ vim.keymap.set({ 'n' }, '<C-j>', '<cmd>wincmd j<CR>')
 vim.keymap.set({ 'n' }, '<C-k>', '<cmd>wincmd k<CR>')
 vim.keymap.set({ 'n' }, '<C-l>', '<cmd>wincmd l<CR>')
 
--- Spelling
-vim.keymap.set({ 'n' }, '<F11>', ':set spell!<cr>', { silent = true })
-
 -- Maximizer
 vim.keymap.set({ 'n' }, '<leader>dm', ':MaximizerToggle!<CR>')
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
--- Vimspector
-vim.keymap.set({ 'n' },'<leader>dd', ':call vimspector#Launch()<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>dc', ':call win_gotoid(g:vimspector_session_windows.code)<CR> :MaximizerToggle!<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>dt', ':call win_gotoid(g:vimspector_session_windows.tabpage)<CR> :MaximizerToggle!<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>dv', ':call win_gotoid(g:vimspector_session_windows.variables)<CR> :MaximizerToggle!<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>dw', ':call win_gotoid(g:vimspector_session_windows.watches)<CR> :MaximizerToggle!<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>ds', ':call win_gotoid(g:vimspector_session_windows.stack_trace)<CR> :MaximizerToggle!<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>do', ':call win_gotoid(g:vimspector_session_windows.output)<CR> :MaximizerToggle!<CR>', {noremap = true})
-vim.keymap.set({ 'n' },'<leader>de', ':call vimspector#Reset()<CR>', {noremap = true})
-
-vim.keymap.set({ 'n' },'<leader>dl', '<Plug>VimspectorStepInto', {noremap = false})
-vim.keymap.set({ 'n' },'<leader>dj', '<Plug>VimspectorStepOver', {noremap = false})
-vim.keymap.set({ 'n' },'<leader>dk', '<Plug>VimspectorStepOut', {noremap = false})
-vim.keymap.set({ 'n' },'<leader>dr', '<Plug>VimspectorRestart', {noremap = false})
-vim.keymap.set({ 'n' },'<leader>d<space>', ':call vimspector#Continue()<CR>', {noremap = true})
-
-vim.keymap.set({ 'n' },'<leader>dg', '<Plug>VimspectorRunToCursor', {noremap = false})
-vim.keymap.set({ 'n' },'<leader>db', '<Plug>VimspectorToggleBreakpoint', {noremap = false})
-vim.keymap.set({ 'n' },'<Leader>di', '<Plug>VimspectorBalloonEval', {noremap = false})
-
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -244,9 +182,18 @@ require('lualine').setup {
   options = {
     icons_enabled = false,
     theme = 'onedark',
-    component_separators = '|',
+    component_separators = '│',
     section_separators = '',
+    disabled_filetypes = { statusline = { 'dapui_scopes', 'dapui_stacks', 'dap-repl' } },
   },
+  -- inactive_sections = {
+  --   lualine_a = {},
+  --   lualine_b = {},
+  --   lualine_c = {},
+  --   lualine_x = {},
+  --   lualine_y = {},
+  --   lualine_z = {}
+  -- },
 }
 
 -- Enable Comment.nvim
@@ -255,8 +202,24 @@ require('Comment').setup()
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
 require('indent_blankline').setup {
-  char = '┊',
-  show_trailing_blankline_indent = false,
+  char = '│',
+  -- show_trailing_blankline_indent = false,
+  char_highlight_list = {
+    "IndentBlanklineIndent1",
+    "IndentBlanklineIndent2",
+    "IndentBlanklineIndent3",
+    "IndentBlanklineIndent4",
+    "IndentBlanklineIndent5",
+    "IndentBlanklineIndent6",
+  },
+  space_char_highlight_list = {
+    "IndentBlanklineIndent1",
+    "IndentBlanklineIndent2",
+    "IndentBlanklineIndent3",
+    "IndentBlanklineIndent4",
+    "IndentBlanklineIndent5",
+    "IndentBlanklineIndent6",
+  },
 }
 
 -- Gitsigns
@@ -429,8 +392,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 require('mason').setup()
 
 -- Enable the following language servers
-local servers = {'pylsp'}
--- local servers = {'pylsp', 'sumneko_lua' }
+local servers = {'pylsp', 'sumneko_lua' }
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -444,8 +406,12 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- Grammarly setup for spellchecking
+require'lspconfig'.grammarly.setup{
+  filetypes = {'tex'},
+}
+
 -- Example custom configuration for lua
---
 -- Make runtime files discoverable to the server
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
@@ -515,9 +481,6 @@ cmp.setup {
   },
 }
 
--- Vimspector
-vim.g.vimspector_install_gadgets = { 'debugpy', 'vscode-cpptools', 'CodeLLDB' }
-
 -- Toggleterm
 require'toggleterm'.setup {
   size = 75,
@@ -530,6 +493,122 @@ require'toggleterm'.setup {
   direction = 'float',
 }
 
+-- DAP
+require("neodev").setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+})
+
+require('dap').adapters.python = {
+  type = 'executable';
+  command = '/home/westermann/.local/share/nvim/mason/packages/debugpy/venv/bin/python';
+  args = { '-m', 'debugpy.adapter' };
+}
+
+require('dap').configurations.python = {
+  {
+    -- The first three options are required by nvim-dap
+    type = 'python'; -- the type here established the link to the adapter definition: `dap.adapters.python`
+    request = 'launch';
+    name = "Launch file";
+    stopOnEntry = 'true';
+    justMyCode = 'true';
+    cwd = "${workspaceFolder}";
+
+    -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+
+    program = "${file}"; -- This configuration will launch the current file if used.
+    pythonPath = function()
+      local cwd = vim.fn.getcwd()
+      if vim.fn.executable(cwd .. '/venv/bin/python') == 1 then
+        return cwd .. '/venv/bin/python'
+      elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
+        return cwd .. '/.venv/bin/python'
+      else
+        return '/opt/intel/oneapi/intelpython/latest/bin/python'
+      end
+    end;
+  },
+}
+
+vim.keymap.set('n', '<Leader>d<Space>', function() require('dap').continue() end)
+vim.keymap.set('n', '<Leader>dj', function() require('dap').step_over() end)
+vim.keymap.set('n', '<Leader>dl', function() require('dap').step_into() end)
+vim.keymap.set('n', '<Leader>dk', function() require('dap').step_out() end)
+vim.keymap.set('n', '<Leader>db', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>dB', function() require('dap').set_breakpoint() end)
+vim.keymap.set('n', '<Leader>dg', function() require('dap').run_to_cursor() end)
+vim.keymap.set('n', '<Leader>dn', function() require('dap').run_last() end)
+
+-- DAP UI
+-- see :h dapui.setup()
+require("dapui").setup({
+  icons = { expanded = "▾", collapsed = "▸" },
+  controls = {
+    enabled = false,
+  },
+  mappings = {
+    open = "o",
+    remove = "d",
+    edit = "e",
+    repl = "r",
+    toggle = "t",
+    close = "q"
+  },
+  expand_lines = true,
+  layouts = {
+    {
+      elements = {
+        "scopes",
+        'stacks',
+        "repl",
+      },
+      size = 0.25,
+      position = "left"
+    },
+    -- {
+    --   elements = {
+    --     "repl",
+    --   },
+    --   size = 0.2,
+    --   position = "bottom",
+    -- },
+  },
+  floating = {
+    max_height = nil,
+    max_width = nil,
+    border = "single",
+    mappings = {
+      close = { "q", "<Esc>" },
+    },
+  },
+  windows = { indent = 1 },
+  render = {
+    max_type_length = nil,
+  },
+})
+
+vim.keymap.set("n", "<Leader>di", function() require("dapui").eval(nil,{enter = true}) end)
+vim.keymap.set("n", "<localleader>de", function()
+  require('dap').clear_breakpoints()
+  require("dapui").close()
+  require('dap').terminate()
+end)
+
+vim.keymap.set("n", "<localleader>dr", function()
+  require('dap').terminate()
+  require('dap').continue()
+  require("dapui").open()
+  require('dap').restart()
+end)
+
+vim.opt.fillchars = {
+  horiz = '━',
+  vert = '┃',
+  stl = '━',
+  stlnc = '━',
+}
+
+-- Colorscheme and overrides
 require("gruvbox").setup({
   undercurl = true,
   underline = true,
@@ -546,13 +625,21 @@ require("gruvbox").setup({
   transparent_mode = false,
   palette_overrides = {
         dark0 = "#141c21",
+        dark1 = "#141c21",
+        -- dark2 = "#141c21",
+        dark3 = "#076678", -- #4c697a
     },
   overrides = {
-        SignColumn = {bg = "#141c21"},
-        CursorLineNr = {fg = "#FF0000"}
+        SignColumn = {bg = "#141c21", fg = "#141c21"},
+        CursorLineNr = {fg = "#FF0000", bg = "#141c21"},
+        CursorLine = {bg = "#076678"},
+        -- VertSplit = {bg = "#076678"},
+        WinSeparator = {fg = "#f2e5bc"},
+        -- Cursor = {fg = "#4c697a", bg = "#4c697a"},
     }
 })
-vim.cmd("colorscheme gruvbox")
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+vim.cmd('au BufEnter * setlocal cursorline')
+vim.cmd('au WinLeave * setlocal nocursorline')
+
+vim.cmd("colorscheme gruvbox")

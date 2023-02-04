@@ -129,10 +129,30 @@ _G.packer_plugins = {
     path = "/home/westermann/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
+  ["neodev.nvim"] = {
+    loaded = true,
+    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/neodev.nvim",
+    url = "https://github.com/folke/neodev.nvim"
+  },
+  ["neovim-codicons"] = {
+    loaded = true,
+    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/neovim-codicons",
+    url = "https://github.com/ChristianChiarulli/neovim-codicons"
+  },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/home/westermann/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
+  },
+  ["nvim-dap"] = {
+    loaded = true,
+    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -177,11 +197,6 @@ _G.packer_plugins = {
     path = "/home/westermann/.local/share/nvim/site/pack/packer/start/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
   },
-  ["vim-maximizer"] = {
-    loaded = true,
-    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/vim-maximizer",
-    url = "https://github.com/szw/vim-maximizer"
-  },
   ["vim-rhubarb"] = {
     loaded = true,
     path = "/home/westermann/.local/share/nvim/site/pack/packer/start/vim-rhubarb",
@@ -191,16 +206,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/westermann/.local/share/nvim/site/pack/packer/start/vim-sleuth",
     url = "https://github.com/tpope/vim-sleuth"
-  },
-  ["vim-surround"] = {
-    loaded = true,
-    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/vim-surround",
-    url = "https://github.com/tpope/vim-surround"
-  },
-  vimspector = {
-    loaded = true,
-    path = "/home/westermann/.local/share/nvim/site/pack/packer/start/vimspector",
-    url = "https://github.com/puremourning/vimspector"
   },
   vimtex = {
     loaded = false,
