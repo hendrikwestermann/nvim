@@ -196,7 +196,8 @@ require('lualine').setup {
 }
 
 -- NeoGit
-require('neogit').setup()
+local neogit = require('neogit')
+neogit.setup {}
 
 -- Enable Comment.nvim
 require('Comment').setup()
