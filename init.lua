@@ -9,10 +9,9 @@ end
 
   require('packer').startup(function(use)
   use 'wbthomason/packer.nvim' -- Package manager
-  use 'tpope/vim-fugitive' -- Git commands in nvim
-  use 'tpope/vim-rhubarb' -- Fugitive-companion to interact with github
   use 'lewis6991/gitsigns.nvim'
   use 'numToStr/Comment.nvim' -- comment visual regions/lines
+  use 'NeogitOrg/neogit'
 
   use { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter', run = function()
@@ -30,7 +29,7 @@ end
   }
 
   use { -- Autocompletion
-    'hrsh7th/nvim-cmp',
+   'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
 
@@ -196,6 +195,9 @@ require('lualine').setup {
   -- },
 }
 
+-- NeoGit
+require('neogit').setup()
+
 -- Enable Comment.nvim
 require('Comment').setup()
 
@@ -270,8 +272,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
-  -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
+  ensure_installed = { 'c', 'cpp', 'lua', 'python', 'rust', 'help' },
 
   highlight = { enable = true },
   indent = { enable = true },
@@ -392,7 +393,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 require('mason').setup()
 
 -- Enable the following language servers
-local servers = {'pylsp', 'sumneko_lua' }
+local servers = {'pylsp', 'lua_ls', 'rust_analyzer' }
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -417,7 +418,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
-require('lspconfig').sumneko_lua.setup {
+require('lspconfig').lua_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -530,6 +531,30 @@ require('dap').configurations.python = {
   },
 }
 
+require('dap').adapters.codelldb = {
+  type = 'server',
+  -- host = '127.0.0.1',
+  port = "13000",
+  executable = {
+    command = '/home/westermann/.local/share/nvim/mason/packages/codelldb',
+    args = {"--port", "13000"},
+  }
+}
+
+require('dap').configurations.rust = {
+    {
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd()..'/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        terminal = 'integrated',
+        sourceLanguages = { 'rust' },
+        stopOnEntry = true
+    }
+}
+
 vim.keymap.set('n', '<Leader>d<Space>', function() require('dap').continue() end)
 vim.keymap.set('n', '<Leader>dj', function() require('dap').step_over() end)
 vim.keymap.set('n', '<Leader>dl', function() require('dap').step_into() end)
@@ -598,14 +623,15 @@ vim.keymap.set("n", "<localleader>dr", function()
   require('dap').terminate()
   require('dap').continue()
   require("dapui").open()
-  require('dap').restart()
 end)
 
+require('dap').set_log_level('ERROR')
+
 vim.opt.fillchars = {
-  horiz = '━',
-  vert = '┃',
+  horiz = '-',
+  -- vert = '|',
   stl = '━',
-  stlnc = '━',
+  stlnc = 'ￚ',
 }
 
 -- Colorscheme and overrides
@@ -613,7 +639,11 @@ require("gruvbox").setup({
   undercurl = true,
   underline = true,
   bold = true,
-  italic = true,
+  italic = {
+     strings = true,
+     operators = true,
+     comments = true
+  },
   strikethrough = true,
   invert_selection = false,
   invert_signs = false,
@@ -626,15 +656,20 @@ require("gruvbox").setup({
   palette_overrides = {
         dark0 = "#141c21",
         dark1 = "#141c21",
+        -- light1 = "#141c21",
+
         -- dark2 = "#141c21",
-        dark3 = "#076678", -- #4c697a
+        -- dark3 = "#076678", -- #4c697a
     },
   overrides = {
         SignColumn = {bg = "#141c21", fg = "#141c21"},
         CursorLineNr = {fg = "#FF0000", bg = "#141c21"},
         CursorLine = {bg = "#076678"},
-        -- VertSplit = {bg = "#076678"},
-        WinSeparator = {fg = "#f2e5bc"},
+        VertSplit = {bg = "#141c21",fg = "#f2e5bc"},
+        StatusLineNC = {fg = "#141c21",bg = "#f2e5bc"},
+        -- StatusLine = {bg = "#141c21",fg = "#FF0000"},
+        -- Normal = {bg = "#141c21",fg = "#FF0000"},
+        -- WinSeparator = {fg = "#f2e5bc"},
         -- Cursor = {fg = "#4c697a", bg = "#4c697a"},
     }
 })
